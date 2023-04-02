@@ -19,10 +19,10 @@ app.get('/scan', (req, res) => {
     res.status(200).render('scan', {scanStatus: "ok"});
 });
 
-app.get('/last-week-status', (req, res) => {
-    let status = NetworkStatusController.getAllStatusFromLastWeek();
+app.get('/last-week-status', async (req, res) => {
+    let status = await NetworkStatusController.getAllStatusFromLastWeek();
     res.type('json');
-    res.status(200).send(JSON.stringify(status));
+    res.status(200).send(status);
 });
 
 app.listen(process.env.PORT, () => {

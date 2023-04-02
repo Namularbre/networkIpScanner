@@ -8,6 +8,21 @@ block content
         form
             input#getWeekStatusButton.btn.btn-primary(type="button" value="Afficher les status de cette semaine")
 
+        table.table#weekStatus
+            thead
+                tr
+                    th(scope="col") Etat
+                    th(scope="col") IP
+                    th(scope="col") date
+            tbody
+        
+        template#statusTemplate
+            tr.status
+                td.value
+                td.ip
+                td.date
+
+
 block script
     script.
         class Model {
@@ -16,9 +31,13 @@ block script
                 return document.querySelector('#scanStatus').textContent;
             }
 
-            getLastWeekScan() {
-                fetch("/last-week-status")
-                    .then(response => console.log(response)).catch(error => console.error(error));
+            async getLastWeekScan() {
+                let status = [];
+
+                const response = await fetch("/last-week-status");
+                status = await response.json();
+                
+                return status;
             }
         }
 
@@ -38,13 +57,15 @@ block script
             }
 
             defineEvents() {
-                document.querySelector("#getWeekStatusButton").addEventListener('click', () => {
-                    this.model.getLastWeekScan();
+                document.querySelector("#getWeekStatusButton").addEventListener('click', async () => {
+                    const status = await this.model.getLastWeekScan();
+                    this.view.displayWeekStatus(status);
                 });
             }
         }
 
         class View {
+
             showScanStatus(scanStatus) {
                 const alertDiv = document.querySelector("#alert");
 
@@ -57,6 +78,26 @@ block script
                     alertDiv.classList.remove("alert-info");
                     alertDiv.classList.add("alert-danger");
                 }
+            }
+
+            async displayWeekStatus(status) {
+                const template = document.querySelector('#statusTemplate');
+                const tableBody = document.querySelector('#weekStatus>tbody');
+
+                console.log(status);
+
+                status.forEach((elem) => {
+                    const content = template.content.cloneNode(true);
+                    let valueDiv = content.querySelector('.value');
+                    let ipDiv = content.querySelector('.ip');
+                    let dateDiv = content.querySelector('.date');
+
+                    valueDiv.textContent = elem.response;
+                    ipDiv.textContent = elem.ip;
+                    dateDiv.textContent = elem.date;
+
+                    tableBody.append(content);
+                });
             }
         }
 
