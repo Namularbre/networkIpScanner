@@ -19,4 +19,25 @@ module.exports = class NetworkStatusModel {
         }
         return rows;
     }
+
+    static async fetchAll() {
+        let conn;
+        let result = [];
+
+        try {
+            conn = await db.getConnection();
+            result = await conn.query(
+                `SELECT ip, response, date 
+                 FROM status`,
+                []
+            );
+        } catch (error) {
+            console.error(error.message);
+            throw new Error("DB_ERROR");
+        } finally {
+            if (conn) await conn.release();
+        }
+
+        return result;
+    }
 }
