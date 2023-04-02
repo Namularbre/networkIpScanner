@@ -1,0 +1,22 @@
+html(lang="fr")
+    head
+        meta(charset="utf-8")
+        title= title
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous")
+
+    body
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+            h1.text-light.m-1
+                a.navbar-brand.h1(href='/') Network Scanner
+            .collapse.navbar-collapse
+                ul.navbar-nav.mr-auto
+                    li.nav-item.active
+                        a.nav-link(href="/") Accueil
+                    li.nav-item
+                        a.nav-link(href="/scan") Scanner
+                    li.nav-item
+                        a.nav-link(href="/display") Voir l'état du réseau
+
+        block content
+        block script
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous")

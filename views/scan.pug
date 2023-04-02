@@ -1,0 +1,9 @@
+extends index.pug
+
+block content
+    .container
+        .d-none#scanStatus= scanStatus
+        .alert.alert-warning.m-3#alert Scan en cours
+
+block script
+    script(src="../public/js/scan.js" type="javascript")
