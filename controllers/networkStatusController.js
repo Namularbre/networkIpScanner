@@ -1,30 +1,28 @@
 const net = require('net');
 
-module.exports = class NetWorkStatusController {
+const NetworkStatusModel = require("../models/networkStatusModel");
+
+module.exports = class NetworkStatusController {
     static #network = process.env.NETWORK;
 
     static async setNetwork(netWork) {
-        NetWorkStatusController.#network = netWork;
+        NetworkStatusController.#network = netWork;
     }
 
     static async checkNetWorkStatus() {
         const startAddress = 1;
         const endAddress = 255;
-
-        let networkStatus = [];
         
         for (let i = startAddress; i <= endAddress; i++) {
-            const ipAddress = NetWorkStatusController.#network + i;
-            NetWorkStatusController.checkIpStatus(ipAddress)
+            const ipAddress = NetworkStatusController.#network + i;
+            NetworkStatusController.checkIpStatus(ipAddress)
                 .then(status => {
-                    networkStatus.push(status);
+                    NetworkStatusModel.saveStatus({ip: ipAddress, response: status});
                 })
                 .catch(error => {
-                    networkStatus.push(error);
+                    NetworkStatusModel.saveStatus({ip: ipAddress, response: error});
             });
         }
-
-        return networkStatus;
     }
 
     static async checkIpStatus(ipAddress) {

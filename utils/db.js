@@ -8,5 +8,4 @@ const db = mariadb.createPool({
     connectionLimit: 5
 });
 
-
 module.exports = db;
