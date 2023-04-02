@@ -20,7 +20,7 @@ module.exports = class NetworkStatusModel {
         return rows;
     }
 
-    static async fetchAllFromLastWeek() {
+    static async fetchAllFromLastWeek(page = 0) {
         let conn;
         let result = [];
 
@@ -29,8 +29,10 @@ module.exports = class NetworkStatusModel {
             result = await conn.query(
                 `SELECT ip, response, date 
                  FROM status
-                 WHERE week(date)>=week(now())-1;`,
-                []
+                 WHERE week(date)>=week(now())-1 
+                 LIMIT 30
+                 OFFSET ?`,
+                [page]
             );
         } catch (error) {
             console.error(error.message);

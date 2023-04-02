@@ -6,6 +6,7 @@ block content
         .alert.alert-info.m-3#alert Le scan ce lance au chargement de cette page.
 
         form
+            input#launchScanButton.btn.btn-primary(type="button" value="Scanner")
             input#getWeekStatusButton.btn.btn-primary(type="button" value="Afficher les status de cette semaine")
 
         table.table#weekStatus
@@ -39,6 +40,11 @@ block script
                 
                 return status;
             }
+
+            async launchScan() {
+                const response = await fetch("/scan", {method: "POST"});
+                return await response.json();
+            }
         }
 
         class Controller {
@@ -51,8 +57,7 @@ block script
             }
 
             init() {
-                const scanStatus = this.model.getScanStatus();
-                this.view.showScanStatus(scanStatus);
+                this.model.getScanStatus();
                 this.defineEvents();
             }
 
@@ -60,6 +65,12 @@ block script
                 document.querySelector("#getWeekStatusButton").addEventListener('click', async () => {
                     const status = await this.model.getLastWeekScan();
                     this.view.displayWeekStatus(status);
+                });
+
+                document.querySelector("#launchScanButton").addEventListener('click', async () => {
+                    const scanStatus = await this.model.launchScan();
+
+                    this.view.showScanStatus(scanStatus.scanStatus);
                 });
             }
         }
@@ -69,8 +80,8 @@ block script
             showScanStatus(scanStatus) {
                 const alertDiv = document.querySelector("#alert");
 
-                if (scanStatus === "ok") {
-                    alertDiv.textContent = "Scan terminé !";
+                if (scanStatus) {
+                    alertDiv.textContent = "Le scan fonctionne ! Il faut attendre un peu avant d'avoir le résultat complet";
                     alertDiv.classList.remove("alert-info");
                     alertDiv.classList.add("alert-success");
                 } else {
@@ -83,8 +94,6 @@ block script
             async displayWeekStatus(status) {
                 const template = document.querySelector('#statusTemplate');
                 const tableBody = document.querySelector('#weekStatus>tbody');
-
-                console.log(status);
 
                 status.forEach((elem) => {
                     const content = template.content.cloneNode(true);

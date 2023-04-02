@@ -15,8 +15,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/scan', (req, res) => {
+    res.status(200).render('scan', {});
+});
+
+app.post('/scan', async (req, res) => {
     NetworkStatusController.checkNetWorkStatus();
-    res.status(200).render('scan', {scanStatus: "ok"});
+    res.status(200).send({scanStatus: true});
 });
 
 app.get('/last-week-status', async (req, res) => {
