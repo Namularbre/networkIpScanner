@@ -45,4 +45,8 @@ module.exports = class NetworkStatusController {
             });
         });
     }
+
+    static async getAllStatusFromLastWeek() {
+        return NetworkStatusModel.fetchAllFromLastWeek();
+    }
 }

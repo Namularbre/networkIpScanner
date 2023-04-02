@@ -3,7 +3,62 @@ extends index.pug
 block content
     .container
         .d-none#scanStatus= scanStatus
-        .alert.alert-warning.m-3#alert Scan en cours
+        .alert.alert-info.m-3#alert Le scan ce lance au chargement de cette page.
+
+        form
+            input#getWeekStatusButton.btn.btn-primary(type="button" value="Afficher les status de cette semaine")
 
 block script
-    script(src="../public/js/scan.js" type="javascript")
+    script.
+        class Model {
+
+            getScanStatus() {
+                return document.querySelector('#scanStatus').textContent;
+            }
+
+            getLastWeekScan() {
+                fetch("/last-week-status")
+                    .then(response => console.log(response)).catch(error => console.error(error));
+            }
+        }
+
+        class Controller {
+            model;
+            view;
+
+            constructor() {
+                this.model = new Model();
+                this.view = new View();
+            }
+
+            init() {
+                const scanStatus = this.model.getScanStatus();
+                this.view.showScanStatus(scanStatus);
+                this.defineEvents();
+            }
+
+            defineEvents() {
+                document.querySelector("#getWeekStatusButton").addEventListener('click', () => {
+                    this.model.getLastWeekScan();
+                });
+            }
+        }
+
+        class View {
+            showScanStatus(scanStatus) {
+                const alertDiv = document.querySelector("#alert");
+
+                if (scanStatus === "ok") {
+                    alertDiv.textContent = "Scan terminé !";
+                    alertDiv.classList.remove("alert-info");
+                    alertDiv.classList.add("alert-success");
+                } else {
+                    alertDiv.textContent = "Il y a eu une erreur durant le scan.";
+                    alertDiv.classList.remove("alert-info");
+                    alertDiv.classList.add("alert-danger");
+                }
+            }
+        }
+
+        const controller = new Controller();
+        controller.init();

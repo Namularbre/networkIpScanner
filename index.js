@@ -19,6 +19,12 @@ app.get('/scan', (req, res) => {
     res.status(200).render('scan', {scanStatus: "ok"});
 });
 
+app.get('/last-week-status', (req, res) => {
+    let status = NetworkStatusController.getAllStatusFromLastWeek();
+    res.type('json');
+    res.status(200).send(JSON.stringify(status));
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`Server listening on http://${process.env.HOST}:${process.env.PORT}`);
 });
