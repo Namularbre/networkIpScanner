@@ -2,12 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const Scanner = require("./utils/scanner");
+const NetworkStatusController = require("./controllers/networkStatusController");
 
 const app = express();
 
 app.get('/', (req, res) => {
-    let networkStatus = Scanner.checkNetWorkStatus();
+    let networkStatus = NetworkStatusController.checkNetWorkStatus();
     res.contentType('json');
     res.status(200).send(JSON.stringify(networkStatus));
 });

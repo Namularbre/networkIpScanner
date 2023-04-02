@@ -1,10 +1,10 @@
 const net = require('net');
 
-module.exports = class Scanner {
+module.exports = class NetWorkStatusController {
     static #network = process.env.NETWORK;
 
     static async setNetwork(netWork) {
-        Scanner.#network = netWork;
+        NetWorkStatusController.#network = netWork;
     }
 
     static async checkNetWorkStatus() {
@@ -14,8 +14,8 @@ module.exports = class Scanner {
         let networkStatus = [];
         
         for (let i = startAddress; i <= endAddress; i++) {
-            const ipAddress = Scanner.#network + i;
-            Scanner.checkIpStatus(ipAddress)
+            const ipAddress = NetWorkStatusController.#network + i;
+            NetWorkStatusController.checkIpStatus(ipAddress)
                 .then(status => {
                     networkStatus.push(status);
                 })
