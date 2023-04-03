@@ -12,15 +12,22 @@ module.exports = class NetworkStatusController {
     static async checkNetWorkStatus() {
         const startAddress = 1;
         const endAddress = 255;
+
+        let networkStatus = [];
         
         for (let i = startAddress; i <= endAddress; i++) {
             const ipAddress = NetworkStatusController.#network + i;
+            const noResponse = "Timeout de connexion atteint";
             NetworkStatusController.checkIpStatus(ipAddress)
                 .then(status => {
+                    networkStatus.push({ip: ipAddress, response: status});
                     NetworkStatusModel.saveStatus({ip: ipAddress, response: status});
                 })
                 .catch(error => {
-                    NetworkStatusModel.saveStatus({ip: ipAddress, response: error});
+
+                    if (error !== noResponse) {
+                        NetworkStatusModel.saveStatus({ip: ipAddress, response: error});
+                    }
             });
         }
     }

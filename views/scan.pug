@@ -3,7 +3,7 @@ extends index.pug
 block content
     .container
         .d-none#scanStatus= scanStatus
-        .alert.alert-info.m-3#alert Le scan ce lance au chargement de cette page.
+        .alert.alert-info.m-3#alert Lancer le scan avec le bouton Scanner pour commencer.
 
         form
             input#launchScanButton.btn.btn-primary(type="button" value="Scanner")
@@ -39,6 +39,10 @@ block script
                 status = await response.json();
                 
                 return status;
+            }
+
+            async prepareDate(date) {
+                return date.split('T')[0];
             }
 
             async launchScan() {
@@ -77,7 +81,7 @@ block script
 
         class View {
 
-            showScanStatus(scanStatus) {
+            async showScanStatus(scanStatus) {
                 const alertDiv = document.querySelector("#alert");
 
                 if (scanStatus) {
