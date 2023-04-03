@@ -22,7 +22,6 @@ PORT=80 (you can replace it by what you want)
 
 NETWORK=192.168.1. the network you want to scan, with the last number removed. (I will upgrade this later)
 
-#db config
 DB_HOST=ip of your db
 DB_USER=the user of your db
 DB_PASS=his password
