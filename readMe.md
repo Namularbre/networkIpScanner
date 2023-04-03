@@ -17,11 +17,9 @@ First, install dependencies by running "npm i" in a command prompt. You also nee
 
 You also need to create a .env file in the project folder, containing this fields :
 
-# http config
 HOST=the web server IP
 PORT=80 (you can replace it by what you want)
 
-# the network you want to scan
 NETWORK=192.168.1. the network you want to scan, with the last number removed. (I will upgrade this later)
 
 #db config
