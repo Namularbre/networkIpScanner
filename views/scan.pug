@@ -16,16 +16,19 @@ block content
                     th(scope="col") IP
                     th(scope="col") date
             tbody
-        
+
+        button#previousPage
+        p#pageNumber 1
+        button#nextPage
+
         template#statusTemplate
             tr.status
                 td.value
                 td.ip
                 td.date
 
-
 block script
-    script.
+    script(nonce=nonce).
         class Model {
 
             getScanStatus() {

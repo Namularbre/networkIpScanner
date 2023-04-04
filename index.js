@@ -19,7 +19,7 @@ app.get('/scan', (req, res) => {
 });
 
 app.post('/scan', async (req, res) => {
-    NetworkStatusController.checkNetWorkStatus();
+    await NetworkStatusController.checkNetWorkStatus();
     res.status(200).send({scanStatus: true});
 });
 
